@@ -37,7 +37,7 @@ export const GlobalProvider = ({children}) =>{
             type: 'DELETE_TRASACTION',
             payload: id
         })
-        await fetch(`http://localhost:5000/api/deleteitem/${id}`)
+        await fetch(`/api/deleteitem/${id}`)
 
     }
     
@@ -45,7 +45,7 @@ export const GlobalProvider = ({children}) =>{
     //Actions  -- here in parameter complete transaction object
     async function addTransaction(transaction){
 
-        transaction = await fetch(`http://localhost:5000/api/additem`,{
+        transaction = await fetch(`/api/additem`,{
             method: "POST",
             body: JSON.stringify(transaction),
             headers: {

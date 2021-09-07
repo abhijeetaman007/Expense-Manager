@@ -11,7 +11,7 @@ export const TransactionList = () => {
     const {setAllItems} = useContext(GlobalContext)
   // updating components whenever change
     useEffect(async ()=>{
-        let items = await fetch('http://localhost:5000/api/allitems')
+        let items = await fetch('/api/allitems')
         items= await items.json()
         // console.log("fetched from DB"+items)
         // console.log(items)
