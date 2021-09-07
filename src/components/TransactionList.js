@@ -1,13 +1,24 @@
-import React,{useContext} from 'react'
+import React,{useContext,useEffect} from 'react'
 import { GlobalContext } from '../context/GlobalState'
 import { Transaction } from './Transaction'
 
 export const TransactionList = () => {
    
     const {transactions}= useContext(GlobalContext)
-   
+    
     console.log(transactions)
-   
+
+    const {setAllItems} = useContext(GlobalContext)
+  // updating components whenever change
+    useEffect(async ()=>{
+        let items = await fetch('http://localhost:5000/api/allitems')
+        items= await items.json()
+        // console.log("fetched from DB"+items)
+        // console.log(items)
+        setAllItems(items)
+    })
+
+
     return (
         <>
           <h3>History</h3>

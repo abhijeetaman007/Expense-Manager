@@ -15,14 +15,12 @@ export const AddTransaction = () => {
     const onSubmit = e =>{
         e.preventDefault()
 
-
         let newTransaction = {
-            id: Math.floor(Math.random() * 100000000),
             text, //taking from textState
             amount:+amount,  //converting string into number or instead use parseInt
         }
-        addTransaction(newTransaction)
 
+        addTransaction(newTransaction)
     }
 
 

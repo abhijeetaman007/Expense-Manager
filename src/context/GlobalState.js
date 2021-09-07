@@ -1,13 +1,14 @@
-import React,{createContext,useReducer} from 'react'
+import React,{createContext,useReducer,useEffect} from 'react'
 import AppReducer from './AppReducer'
 
-//Initial State
+//Initial State -----> Fetch DB
+
+
+
+
 const initialState = {
-    transactions: [  { id: 1, text: 'Flower', amount: -20 },
-                    { id: 2, text: 'Salary', amount: 300 },
-                    { id: 3, text: 'Book', amount: -10 },
-                    { id: 4, text: 'Camera', amount: 150 }
-                ]
+    transactions: [  { _id: null, text: null, amount: null },
+]
 }
 
 //Create Context
@@ -15,19 +16,48 @@ export const GlobalContext = createContext(initialState)
 
 //Provider component
 export const GlobalProvider = ({children}) =>{
+
     const [state,dispatch] = useReducer(AppReducer,initialState)
+    
+
+    //Actions -- setAll items
+    function setAllItems(transactions){
+        dispatch({
+            type:'SET_ALL_TRANSACTIONS',
+            payload:transactions
+        })
 
 
-    //Actions
-    function deleteTransaction(id){
+    } 
+
+
+    //Actions 
+    async function deleteTransaction(id){
         dispatch({
             type: 'DELETE_TRASACTION',
             payload: id
         })
+        await fetch(`http://localhost:5000/api/deleteitem/${id}`)
+
     }
+    
 
     //Actions  -- here in parameter complete transaction object
-    function addTransaction(transaction){
+    async function addTransaction(transaction){
+
+        transaction = await fetch(`http://localhost:5000/api/additem`,{
+            method: "POST",
+            body: JSON.stringify(transaction),
+            headers: {
+                "Content-type": "application/json",
+                // "x-auth-token": auth.state.token,
+            }
+
+            // body:transaction
+        })  
+
+        console.log("Item to add")
+        console.log(transaction)
         dispatch({
             type: 'ADD_TRANSACTION',
             payload: transaction
@@ -38,6 +68,7 @@ export const GlobalProvider = ({children}) =>{
      return (<GlobalContext.Provider value={{
         transactions:state.transactions,
         deleteTransaction,
-        addTransaction  
+        addTransaction,
+        setAllItems
     }}>{children}</GlobalContext.Provider>)
 }
